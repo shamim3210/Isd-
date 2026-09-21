@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verify your email — LibraryMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=20260923" />
+</head>
+<body>
+  <main style="max-width:440px;margin:80px auto;padding:0 24px;text-align:center;">
+    <div class="brand-mark" style="margin:0 auto 20px;">§</div>
+    <h1 style="font-family:'Roboto Slab',serif;font-size:26px;margin-bottom:12px;" id="statusTitle">Verifying your email…</h1>
+    <p id="statusMsg" class="hint" style="margin-bottom:24px;">Please wait a moment.</p>
+    <a href="index.html" class="btn-primary" style="display:inline-block;text-decoration:none;">Go to LibraryMS</a>
+  </main>
+<script src="api-config.js?v=20260923"></script>
+<script>
+  const API_BASE = (window.LIBRARYMS_IS_LOCAL && !["5000", "8888"].includes(window.location.port) ? "http://localhost:5000" : (window.LIBRARYMS_API_BASE || ""));
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+  const titleEl = document.getElementById("statusTitle");
+  const msgEl = document.getElementById("statusMsg");
+
+  if (!token) {
+    titleEl.textContent = "Missing verification link";
+    msgEl.textContent = "This link looks incomplete. Please use the link from your email.";
+  } else {
+    fetch(`${API_BASE}/api/auth/verify-email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    })
+      .then((r) => r.json().then((data) => ({ ok: r.ok, data })))
+      .then(({ ok, data }) => {
+        if (ok) {
+          titleEl.textContent = "Email verified ✓";
+          msgEl.textContent = data.message || "Your email has been verified. You can now log in.";
+        } else {
+          titleEl.textContent = "Verification failed";
+          msgEl.textContent = data.error || "This link is invalid or has expired.";
+        }
+      })
+      .catch(() => {
+        titleEl.textContent = "Couldn't reach the server";
+        msgEl.textContent = "Check that the backend is running and reachable, then try the link again.";
+      });
+  }
+</script>
+</body>
+</html>
