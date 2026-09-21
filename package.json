@@ -1,0 +1,30 @@
+{
+  "name": "librarms-backend",
+  "version": "1.0.0",
+  "description": "LibraryMS - Online Library Management System Backend (MongoDB + Express)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node scripts/seedBooks.js",
+    "seed:rooms": "node scripts/seedRooms.js",
+    "test": "node --test tests/*.test.js",
+    "reminders": "node scripts/sendReminders.js",
+    "digest": "node scripts/weeklyDigest.js"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "axios": "^1.20.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.0",
+    "nodemailer": "^6.9.14",
+    "pdfkit": "^0.15.0",
+    "qrcode": "^1.5.4",
+    "speakeasy": "^2.0.0"
+  }
+}
